@@ -3,14 +3,7 @@ import requests
 
 def get_token():
     """
-    This function retrieves an access token from Spotify.
-
-    Parameters:
-    - client_id: The client ID for your Spotify application.
-    - client_secret: The client secret for your Spotify application.
-
-    Returns:
-    - The access token as a string.
+    Returns the access token as a string.
     """
     url = "https://accounts.spotify.com/api/token"
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
