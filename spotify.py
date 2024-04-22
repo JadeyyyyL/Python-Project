@@ -41,13 +41,14 @@ def search_top_track(id, country = "US"):
 
     response_data = get(url, headers=headers, params=params)
     data = response_data.json()
-    # pprint.pprint(data)
-    return data
+    pprint.pprint(data)
+    # return data
 
 
 
-# def top_5_tracks(data):
-#     top_tracks = data.get("tracks", [])[:limit]
+def top_5_tracks(data):
+    pass
+    
 
 
 
@@ -57,14 +58,16 @@ def main():
     id = artist_id(artist_data)
     top_track_data = search_top_track(id)
 
+    # print(top_track_data["tracks"])
+
 
     # search_artist(artist_name)
     # 41MozSoPIsD1dJM0CLPjZF
 
-    print(artist_id(artist_data))
-    print(artist_name(artist_data))
-    print(artist_followers(artist_data))
-    print(genre(artist_data))
+    # print(artist_id(artist_data))
+    # print(artist_name(artist_data))
+    # print(artist_followers(artist_data))
+    # print(genre(artist_data))
 
     search_top_track(id)
 
