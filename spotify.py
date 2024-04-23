@@ -24,30 +24,25 @@ def search_artist(artist_name):
 def artist_id(data):
     return data["id"] 
 
-def artist_name(data):
-    return data["name"]
+# def artist_name(data):
+#     return data["name"]
 
-def artist_followers(data):
-    return data["followers"]["total"]
+# def artist_followers(data):
+#     return data["followers"]["total"]
 
-def genre(data):
-    return data["genres"]
+# def genre(data):
+#     return data["genres"]
 
-def search_top_track(id, country = "US"):
+def search_audio_feature(id):
     token = spotify_token.get_token()
-    url = f"https://api.spotify.com/v1/artists/{id}/top-tracks"    
+    url = f"https://api.spotify.com/v1/audio-features/{id}"    
     headers = get_header(token)
-    params = {"country": country}
+    # params = {"country": country}
 
-    response_data = get(url, headers=headers, params=params)
+    response_data = get(url, headers=headers)
     data = response_data.json()
     pprint.pprint(data)
     # return data
-
-
-
-def top_5_tracks(data):
-    pass
     
 
 
@@ -56,7 +51,8 @@ def main():
     artist = "BLACKPINK"
     artist_data = search_artist(artist)
     id = artist_id(artist_data)
-    top_track_data = search_top_track(id)
+    
+    search_audio_feature(id)
 
     # print(top_track_data["tracks"])
 
@@ -68,8 +64,6 @@ def main():
     # print(artist_name(artist_data))
     # print(artist_followers(artist_data))
     # print(genre(artist_data))
-
-    search_top_track(id)
 
 if __name__ == "__main__":
     main()
