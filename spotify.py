@@ -1,6 +1,7 @@
 import spotify_token
 import pprint 
 from requests import get
+import json
 
 def get_header(token):
     """
@@ -33,6 +34,8 @@ def artist_id(data):
 # def genre(data):
 #     return data["genres"]
 
+
+
 def search_audio_feature(id):
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/audio-features/{id}"    
@@ -51,8 +54,12 @@ def main():
     artist = "BLACKPINK"
     artist_data = search_artist(artist)
     id = artist_id(artist_data)
+
+    pprint.pprint(artist_data)
+
+    # get_songs_by_artist(artist)
     
-    search_audio_feature(id)
+    # search_audio_feature(id)
 
     # print(top_track_data["tracks"])
 

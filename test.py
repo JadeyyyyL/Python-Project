@@ -17,9 +17,11 @@ def search_track(track_name, artist_name):
 
     response_data = get(url, headers=headers, params=params)
     data = response_data.json()
+    # track_ids = [item['id'] for item in data['tracks']['items']]
+    # print(track_ids)
     pprint.pprint(data)
     # data = data["artists"]["items"][0]
     # pprint.pprint(artist_data)
     # return data
 
-search_track("YES or YES", "TWICE")
+search_track("Greedy", "Tate McRae")
