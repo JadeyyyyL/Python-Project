@@ -4,14 +4,21 @@ from nltk.corpus import stopwords
 from nltk.sentiment import SentimentIntensityAnalyzer
 from spellchecker import SpellChecker
 
+def normalize_repeated_characters(text):
+    """Normalize repeated characters in the given text."""
+    normalized_text = re.sub(r'(.)\1+', r'\1\1', text)
+    return normalized_text
+
 def spellcheck(text):
      """Checks for misspelled words and corrects it."""
      spell = SpellChecker()
-     misspelled = spell.unknown(text)
-     corrected_text = [spell.correction(word) if word in misspelled else word for word in text]
-     print(corrected_text)
+     normalized_text = normalize_repeated_characters(text)
+     words = normalized_text.split()
+    #  print(words)
+     misspelled = spell.unknown(words)
+     corrected_text = [spell.correction(word) if word in misspelled else word for word in words]
+    #  print(corrected_text)
      return corrected_text
-
 
 def sentiment_analysis():
     """Returns the sentiment score of the user input."""
