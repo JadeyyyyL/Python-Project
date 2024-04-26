@@ -1,4 +1,5 @@
 import re
+import enchant
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -12,31 +13,31 @@ def normalize_repeated_characters(text):
 def spellcheck(text):
      """Checks for misspelled words and corrects it."""
      spell = SpellChecker()
-     normalized_text = normalize_repeated_characters(text)
+     tokenized_words = word_tokenize(text.lower())
+     tokenized_words = " ".join(tokenized_words)
+    #  print(tokenized_words)
+     normalized_text = normalize_repeated_characters(tokenized_words)
      words = normalized_text.split()
     #  print(words)
      misspelled = spell.unknown(words)
      corrected_text = [spell.correction(word) if word in misspelled else word for word in words]
-    #  print(corrected_text)
+     print(corrected_text)
      return corrected_text
 
 def sentiment_analysis():
     """Returns the sentiment score of the user input."""
     text = input("Tell us how you feel right now: ")
 
-    tokenize_text = word_tokenize(text.lower())
-    corrected_tokenized_text = spellcheck(text)
+    corrected_text = spellcheck(text)
     stop_words = set(stopwords.words("english"))
-    filtered_tokenized_text = [word for word in corrected_tokenized_text if word.isalnum() and word not in stop_words]
+    filtered_tokenized_text = [word for word in corrected_text if word.isalnum() and word not in stop_words]
 
     filtered_text = " ".join(filtered_tokenized_text)
-
     filtered_text = re.sub(r'[\U00010000-\U0010ffff]', lambda match: f":{match.group(0)[1:]}:", filtered_text)
 
     print(filtered_text)
 
     sentiment_score = SentimentIntensityAnalyzer().polarity_scores(filtered_text)
-
     return sentiment_score
 
 def categorize_mood():
