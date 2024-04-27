@@ -44,7 +44,6 @@ def get_related_artist(id):
     top_5 = [artist["name"] for artist in related_artists[:5]]
     return top_5
 
-
 def search_audio_feature(id):
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/audio-features/{id}"    
@@ -56,8 +55,6 @@ def search_audio_feature(id):
     pprint.pprint(data)
     # return data
     
-
-
 
 def main():
     artist = "BLACKPINK"
