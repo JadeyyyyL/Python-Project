@@ -26,7 +26,15 @@ def submit():
 @app.route('/results/<user_input>')
 def generate_song(user_input):
     #recommendation = recommended_song()
-    return render_template("results.html", user_input=user_input) #recommendation = recommendation
+    #spotify_preview = "https://open.spotify.com/embed/track/6rqhFgbbKwnb9MLmUQDhG6"
+    #related_artists = [
+    #     {"name": "Artist 1", "image": "artist1.jpg", "link": "https://example.com/artist1"},
+    #     {"name": "Artist 2", "image": "artist2.jpg", "link": "https://example.com/artist2"},
+    #     {"name": "Artist 3", "image": "artist3.jpg", "link": "https://example.com/artist3"},
+    #     {"name": "Artist 4", "image": "artist4.jpg", "link": "https://example.com/artist4"},
+    #     {"name": "Artist 5", "image": "artist5.jpg", "link": "https://example.com/artist5"}
+    # ]
+    return render_template("results.html", user_input=user_input) #recommendation = recommendation, spotify_preview = spotify_preview, related_artists = related_artists
 
 
 #Error page
