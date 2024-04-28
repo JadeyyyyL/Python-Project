@@ -69,8 +69,8 @@ def extract_track_names(data):
             tracks.append(track_names)
         else:
             print("no tracks found")
-    # return tracks
-    print(tracks)
+    return tracks
+    # print(tracks)
     
 
 def search_audio_feature(id):
