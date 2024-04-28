@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder = "template")
 
 # Home page
 @app.route('/')
@@ -25,8 +25,8 @@ def submit():
 # Next page
 @app.route('/results/<user_input>')
 def generate_song(user_input):
-    recommendation = recommended_song()
-    return render_template("results.html", user_input=user_input, recommendation = recommendation)
+    #recommendation = recommended_song()
+    return render_template("results.html", user_input=user_input) #recommendation = recommendation
 
 
 #Error page
