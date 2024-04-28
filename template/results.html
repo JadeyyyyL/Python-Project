@@ -4,9 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Results</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            color: #ff69b4;
+            margin-bottom: 0.5em;
+        }
+    </style>
 </head>
 <body>
     <h1>According to your inputs, we have one recommended song for you from Spotify's top hits:</h1>
-    
+    <h2>Spotify Preview</h2>
+    <!-- <iframe class="spotify-preview" src="{{ spotify_preview }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+     -->
+    <h2>Related Artists</h2>
+    <!-- <div class="related-artists">
+        {% for artist in related_artists %}
+            <div class="related-artist">
+                <a href="{{ artist.link }}"><img src="{{ artist.image }}" alt="{{ artist.name }}"></a>
+                <p>{{ artist.name }}</p>
+            </div>
+        {% endfor %}
+    </div> -->
 </body>
 </html>
