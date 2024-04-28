@@ -1,6 +1,6 @@
-import spotify_token
-import pprint 
 from requests import get
+import spotify_token
+
 
 def get_header(token):
     """
@@ -8,20 +8,24 @@ def get_header(token):
     """
     return {"Authorization": "Bearer " + token}
 
-def search_track(track_name, artist_name):
+def search_tracks(keyword, limit=50):
     token = spotify_token.get_token()
-    url = "https://api.spotify.com/v1/search"
+    url = f'https://api.spotify.com/v1/search?q={keyword}&type=track&limit={limit}'
     headers = get_header(token)
-    query = f"{track_name} artist:{artist_name}"
-    params = {"q": query, "type": "track"}
+    response = get(url, headers=headers)
+    if response.status_code == 200:
+        tracks = response.json()['tracks']['items']
+        return tracks
+    else:
+        print("Error:", response.status_code)
+        return []
 
-    response_data = get(url, headers=headers, params=params)
-    data = response_data.json()
-    # track_ids = [item['id'] for item in data['tracks']['items']]
-    # print(track_ids)
-    pprint.pprint(data)
-    # data = data["artists"]["items"][0]
-    # pprint.pprint(artist_data)
-    # return data
-
-search_track("Greedy", "Tate McRae")
+# Example usage
+keyword = 'dance'
+tracks = search_tracks(keyword)
+for track in tracks:
+    print("Name:", track['name'])
+    print("Artist:", track['artists'][0]['name'])
+    print("Album:", track['album']['name'])
+    print("Listen on Spotify:", track['external_urls']['spotify'])
+    print()

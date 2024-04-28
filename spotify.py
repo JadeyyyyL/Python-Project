@@ -34,7 +34,15 @@ def artist_id(data):
 # def genre(data):
 #     return data["genres"]
 
+def get_related_artist(id):
+    token = spotify_token.get_token()
+    url = f"https://api.spotify.com/v1/artists/{id}/related-artists"
+    headers = get_header(token)
+    response_data = get(url, headers=headers)
+    related_artists = response_data.json()["artists"]
 
+    top_5 = [artist["name"] for artist in related_artists[:5]]
+    return top_5
 
 def search_audio_feature(id):
     token = spotify_token.get_token()
@@ -48,14 +56,14 @@ def search_audio_feature(id):
     # return data
     
 
-
-
 def main():
     artist = "BLACKPINK"
     artist_data = search_artist(artist)
     id = artist_id(artist_data)
 
-    pprint.pprint(artist_data)
+    print(get_related_artist(id))
+
+    # pprint.pprint(artist_data)
 
     # get_songs_by_artist(artist)
     
