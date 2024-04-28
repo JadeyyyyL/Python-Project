@@ -22,17 +22,8 @@ def search_artist(artist_name):
     # pprint.pprint(artist_data)
     return data
 
-def artist_id(data):
+def get_artist_id(data):
     return data["id"] 
-
-# def artist_name(data):
-#     return data["name"]
-
-# def artist_followers(data):
-#     return data["followers"]["total"]
-
-# def genre(data):
-#     return data["genres"]
 
 def get_related_artist(id):
     token = spotify_token.get_token()
@@ -43,6 +34,44 @@ def get_related_artist(id):
 
     top_5 = [artist["name"] for artist in related_artists[:5]]
     return top_5
+
+def search_playlist(playlist_name):
+    token = spotify_token.get_token()
+    url = "https://api.spotify.com/v1/search"
+    headers = get_header(token)
+    params = {"q": playlist_name, "type": "playlist"}
+
+    response_data = get(url, headers=headers, params=params)
+    data = response_data.json()
+    data = data["playlists"]["items"][0]
+    # pprint.pprint(data)
+    return data
+
+def get_playlist_id(playlist_data):
+    return playlist_data["id"]
+
+def search_track_by_playlist(playlist_id, limit=100):
+    token = spotify_token.get_token()
+    url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    headers = get_header(token)
+
+    response_data = get(url, headers=headers)
+    data = response_data.json()
+    # pprint.pprint(data)
+    return data
+
+def extract_track_names(data):
+    tracks = []
+
+    for item in data.get("items", []):
+        track_names = item.get("track", {}).get("name")
+        if track_names:
+            tracks.append(track_names)
+        else:
+            print("no tracks found")
+    # return tracks
+    print(tracks)
+    
 
 def search_audio_feature(id):
     token = spotify_token.get_token()
@@ -59,26 +88,25 @@ def search_audio_feature(id):
 def main():
     artist = "BLACKPINK"
     artist_data = search_artist(artist)
-    id = artist_id(artist_data)
+    artist_id = get_artist_id(artist_data)
+    # print(get_related_artist(artist_id))
 
-    print(get_related_artist(id))
+    playlist = "Today's Top Hits"
+    playlist_data = search_playlist(playlist)
+    playlist_id = get_playlist_id(playlist_data)
+    # print(playlist_id)
+    song_data = search_track_by_playlist(playlist_id)
+    # pprint.pprint(song_data)
 
-    # pprint.pprint(artist_data)
+    extract_track_names(song_data)
 
-    # get_songs_by_artist(artist)
+    
+
     
     # search_audio_feature(id)
 
     # print(top_track_data["tracks"])
 
-
-    # search_artist(artist_name)
-    # 41MozSoPIsD1dJM0CLPjZF
-
-    # print(artist_id(artist_data))
-    # print(artist_name(artist_data))
-    # print(artist_followers(artist_data))
-    # print(genre(artist_data))
 
 if __name__ == "__main__":
     main()

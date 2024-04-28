@@ -11,7 +11,7 @@ def normalize_repeated_characters(text):
 
 def spellcheck(text):
     """Checks for misspelled words and corrects it."""
-    d = set(words.words())
+    # d = set(words.words())
 
     spell = SpellChecker()
     tokenized_words = word_tokenize(text.lower())
