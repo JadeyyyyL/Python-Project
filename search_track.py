@@ -59,7 +59,7 @@ def get_top_hits_playlist_id(playlist_name):
 
 top_hits_playlist_id = get_top_hits_playlist_id("Today's Top Hits")
 
-# print("Spotify ID for Top Hits playlist:", top_hits_playlist_id)
+print("Spotify ID for Top Hits playlist:", top_hits_playlist_id)
     
 def get_playlist_tracks(playlist_id):
     token = spotify_token.get_token()
@@ -92,6 +92,6 @@ def get_playlist_tracks(playlist_id):
 # Example usage: Get tracks from Spotify's "Top Hits" playlist
 top_hits_tracks = get_playlist_tracks(top_hits_playlist_id)
 
-#for idx, track in enumerate(top_hits_tracks, start=1):
-   # print(f"{idx}. {track['name']} - {track['artist']}")
+for idx, track in enumerate(top_hits_tracks, start=1):
+   print(f"{idx}. {track['name']} - {track['artist']}")
    
