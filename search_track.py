@@ -77,6 +77,7 @@ def get_playlist_tracks(playlist_id):
         for item in items:
             track = item['track']
             track_info = {
+                'id': track['id'],
                 'name': track['name'],
                 'artist': track['artists'][0]['name']
             }
@@ -95,3 +96,45 @@ top_hits_tracks = get_playlist_tracks(top_hits_playlist_id)
 for idx, track in enumerate(top_hits_tracks, start=1):
    print(f"{idx}. {track['name']} - {track['artist']}")
    
+def search_audio_features(track_id):
+    token = spotify_token.get_token()
+    url = f"https://api.spotify.com/v1/audio-features/{track_id}"
+    headers = get_header(token)
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        track_features = {
+            'valence': data['valence']
+        }
+        return track_features
+    else:
+        return None
+
+test1 = search_audio_features(top_hits_tracks[0]["id"])
+print(test1)
+
+def get_top_hits_features(top_hits_tracks):
+    top_hits_features = []  
+    for track in top_hits_tracks:
+        basic_info = search_track(track['name'], track['artist'])  
+        name = basic_info['name']
+        artist = basic_info['artist']
+        album = basic_info['album']
+        preview_url = basic_info['preview_url']
+        spotify_url = basic_info['spotify_url']
+            
+        audio_features = search_audio_features(track['id'])   
+        track_info = {
+        'name': name,
+        'artist': artist,
+        'album': album,
+        'preview_url': preview_url,
+        'spotify_url': spotify_url,
+        'audio_features': audio_features  
+        }
+            
+        top_hits_features.append(track_info)
+    return top_hits_features
+
+test2 = get_top_hits_features(top_hits_tracks)
+print(test2[0])
