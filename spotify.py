@@ -35,7 +35,7 @@ def get_related_artist(id):
     top_5 = [artist["name"] for artist in related_artists[:5]]
     return top_5
 
-def search_playlist(playlist_name):
+def search_playlist_id(playlist_name):
     token = spotify_token.get_token()
     url = "https://api.spotify.com/v1/search"
     headers = get_header(token)
@@ -45,20 +45,29 @@ def search_playlist(playlist_name):
     data = response_data.json()
     data = data["playlists"]["items"][0]
     # pprint.pprint(data)
-    return data
-
-def get_playlist_id(playlist_data):
-    return playlist_data["id"]
+    return data["id"]
 
 def search_track_by_playlist(playlist_id, limit=100):
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     headers = get_header(token)
 
+    tracks = []
+
     response_data = get(url, headers=headers)
     data = response_data.json()
     # pprint.pprint(data)
-    return data
+
+    items = data["items"]
+    for item in items:
+        track = item["track"]
+        track_info = {
+            "id": track["id"],
+            "name": track["name"],
+            "artist": track["artists"][0]["name"]
+        }
+        tracks.append(track_info)
+    return tracks
 
 def search_audio_feature(track_id):
     token = spotify_token.get_token()
@@ -79,10 +88,9 @@ def main():
     # print(get_related_artist(artist_id))
 
     playlist = "Today's Top Hits"
-    playlist_data = search_playlist(playlist)
-    playlist_id = get_playlist_id(playlist_data)
-    # print(playlist_id)
-    song_data = search_track_by_playlist(playlist_id)
+    playlist_id = search_playlist_id(playlist)
+    print(playlist_id)
+    # song_data = search_track_by_playlist(playlist_id)
     # pprint.pprint(song_data)
 
      

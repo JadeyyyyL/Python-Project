@@ -61,9 +61,7 @@ def get_playlist_tracks(playlist_id):
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     headers = get_header(token)
-    params = {
-        "limit": 100 
-    }
+    params = {"limit": 100}
     tracks = []
 
     while True:
@@ -86,7 +84,7 @@ def get_playlist_tracks(playlist_id):
 
     return tracks
 
-# Example usage: Get tracks from Spotify's "Top Hits" playlist
+# Get tracks from Spotify's "Top Hits" playlist
 top_hits_tracks = get_playlist_tracks(top_hits_playlist_id)
 
 # for idx, track in enumerate(top_hits_tracks, start=1):
