@@ -39,11 +39,7 @@ def get_top_hits_playlist_id(playlist_name):
     url = "https://api.spotify.com/v1/search"
     headers = get_header(token)
     query = f"playlist:{playlist_name}"
-    params = {
-        "q": query,
-        "type": "playlist",
-        "limit": 1 
-    }
+    params = {"q": query, "type": "playlist", "limit": 1 }
     response = requests.get(url, headers=headers, params=params)
     data = response.json()
     playlists = data.get('playlists', {}).get('items', [])
@@ -65,7 +61,7 @@ def get_playlist_tracks(playlist_id):
     tracks = []
 
     while True:
-        response = requests.get(url, headers=headers, params=params)
+        response = get(url, headers=headers, params=params)
         data = response.json()
         items = data.get('items', [])
         for item in items:
@@ -94,7 +90,7 @@ def search_audio_features(track_id):
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/audio-features/{track_id}"
     headers = get_header(token)
-    response = requests.get(url, headers=headers)
+    response = get(url, headers=headers)
     data = response.json()
     track_features = {
         'valence': data['valence']

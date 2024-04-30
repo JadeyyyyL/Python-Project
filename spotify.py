@@ -4,12 +4,11 @@ from requests import get
 import json
 
 def get_header(token):
-    """
-    Returns a dictionary that contains the authorization header with the access token.
-    """
+    """Returns a dictionary that contains the authorization header with the access token."""
     return {"Authorization": "Bearer " + token}
 
-def search_artist(artist_name):
+def search_artist_id(artist_name):
+    """Returns the Spotify ID of an artist."""
     token = spotify_token.get_token()
     url = "https://api.spotify.com/v1/search"
     headers = get_header(token)
@@ -20,12 +19,10 @@ def search_artist(artist_name):
     # pprint.pprint(data)
     data = data["artists"]["items"][0]
     # pprint.pprint(artist_data)
-    return data
-
-def get_artist_id(data):
-    return data["id"] 
+    return data["id"]
 
 def get_related_artist(id):
+    """Return the Top 5 related artist."""
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/artists/{id}/related-artists"
     headers = get_header(token)
@@ -36,6 +33,7 @@ def get_related_artist(id):
     return top_5
 
 def search_playlist_id(playlist_name):
+    """Returns the Spotify ID of a playlist."""
     token = spotify_token.get_token()
     url = "https://api.spotify.com/v1/search"
     headers = get_header(token)
@@ -48,6 +46,7 @@ def search_playlist_id(playlist_name):
     return data["id"]
 
 def search_track_by_playlist(playlist_id, limit=100):
+    """Return a list of dictionaries of track info for the first 100 tracks from a playlist."""
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     headers = get_header(token)
@@ -68,35 +67,18 @@ def search_track_by_playlist(playlist_id, limit=100):
         }
         tracks.append(track_info)
     return tracks
-
-def search_audio_feature(track_id):
-    token = spotify_token.get_token()
-    url = f"https://api.spotify.com/v1/audio-features/{track_id}"    
-    headers = get_header(token)
-    # params = {"country": country}
-
-    response_data = get(url, headers=headers)
-    data = response_data.json()
-    pprint.pprint(data)
-    # return data
-    
+  
 
 def main():
     artist = "BLACKPINK"
-    artist_data = search_artist(artist)
-    artist_id = get_artist_id(artist_data)
-    # print(get_related_artist(artist_id))
+    artist_id = search_artist_id(artist)
+    print(get_related_artist(artist_id))
 
     playlist = "Today's Top Hits"
     playlist_id = search_playlist_id(playlist)
     print(playlist_id)
-    # song_data = search_track_by_playlist(playlist_id)
+    song_data = search_track_by_playlist(playlist_id)
     # pprint.pprint(song_data)
-
-     
-    # search_audio_feature(id)
-
-    # print(top_track_data["tracks"])
 
 
 if __name__ == "__main__":
