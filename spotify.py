@@ -60,22 +60,21 @@ def search_track_by_playlist(playlist_id, limit=100):
     # pprint.pprint(data)
     return data
 
-def extract_track_names(data):
-    tracks = []
+def extract_track_id(data):
+    tracks_ids = []
 
     for item in data.get("items", []):
-        track_names = item.get("track", {}).get("name")
-        if track_names:
-            tracks.append(track_names)
+        track_id = item.get("track", {}).get("id")
+        if track_id:
+            tracks_ids.append(track_id)
         else:
             print("no tracks found")
-    return tracks
-    # print(tracks)
-    
+    # print(tracks_ids)
+    return tracks_ids
 
-def search_audio_feature(id):
+def search_audio_feature(track_id):
     token = spotify_token.get_token()
-    url = f"https://api.spotify.com/v1/audio-features/{id}"    
+    url = f"https://api.spotify.com/v1/audio-features/{track_id}"    
     headers = get_header(token)
     # params = {"country": country}
 
@@ -98,11 +97,7 @@ def main():
     song_data = search_track_by_playlist(playlist_id)
     # pprint.pprint(song_data)
 
-    extract_track_names(song_data)
-
-    
-
-    
+     
     # search_audio_feature(id)
 
     # print(top_track_data["tracks"])

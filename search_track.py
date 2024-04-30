@@ -14,12 +14,8 @@ def search_track(track_name, artist_name, album_name=None, year=None, genre=None
     url = "https://api.spotify.com/v1/search"
     headers = get_header(token)
     query = f"track:{track_name} artist:{artist_name}"
-    params = {
-        "q": query,
-        "type": "track",
-        "limit": 1 
-    }
-    response = requests.get(url, headers=headers, params=params)
+    params = {"q": query, "type": "track", "limit": 1 }
+    response = get(url, headers=headers, params=params)
     data = response.json()
     tracks = data.get('tracks', {}).get('items', [])
     if tracks:
