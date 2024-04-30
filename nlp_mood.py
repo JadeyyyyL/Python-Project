@@ -1,6 +1,6 @@
 import re
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords, words
+from nltk.corpus import stopwords
 from nltk.sentiment import SentimentIntensityAnalyzer
 from spellchecker import SpellChecker
 
@@ -11,8 +11,6 @@ def normalize_repeated_characters(text):
 
 def spellcheck(text):
     """Checks for misspelled words and corrects it."""
-    # d = set(words.words())
-
     spell = SpellChecker()
     tokenized_words = word_tokenize(text.lower())
     tokenized_words = " ".join(tokenized_words)

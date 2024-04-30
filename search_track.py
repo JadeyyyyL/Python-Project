@@ -34,22 +34,20 @@ def search_track(track_name, artist_name, album_name=None, year=None, genre=None
 # search_track("Greedy", "Tate McRae", album_name="THINK LATER")
 #print(search_track("Standing Next to You", "Jung Kook"))
 
-def get_top_hits_playlist_id(playlist_name):
+def search_playlist_id(playlist_name):
+    """Returns the Spotify ID of a playlist."""
     token = spotify_token.get_token()
     url = "https://api.spotify.com/v1/search"
     headers = get_header(token)
-    query = f"playlist:{playlist_name}"
-    params = {"q": query, "type": "playlist", "limit": 1 }
-    response = requests.get(url, headers=headers, params=params)
-    data = response.json()
-    playlists = data.get('playlists', {}).get('items', [])
-    if playlists:
-        playlist_id = playlists[0]['id']
-        return playlist_id
-    else:
-        return None
+    params = {"q": playlist_name, "type": "playlist"}
 
-top_hits_playlist_id = get_top_hits_playlist_id("Today's Top Hits")
+    response_data = get(url, headers=headers, params=params)
+    data = response_data.json()
+    data = data["playlists"]["items"][0]
+    # pprint.pprint(data)
+    return data["id"]
+
+top_hits_playlist_id = search_playlist_id("Today's Top Hits")
 
 print("Spotify ID for Top Hits playlist:", top_hits_playlist_id)
     
@@ -60,23 +58,21 @@ def get_playlist_tracks(playlist_id):
     params = {"limit": 100}
     tracks = []
 
-    while True:
-        response = get(url, headers=headers, params=params)
-        data = response.json()
-        items = data.get('items', [])
-        for item in items:
-            track = item['track']
-            track_info = {
-                'id': track['id'],
-                'name': track['name'],
-                'artist': track['artists'][0]['name']
-            }
-            tracks.append(track_info)
+    
+    response = get(url, headers=headers, params=params)
+    data = response.json()
+    items = data["items"]
+    for item in items:
+        track = item['track']
+        track_info = {
+            'id': track['id'],
+            'name': track['name'],
+            'artist': track['artists'][0]['name']
+        }
+        tracks.append(track_info)
 
-        if data['next']:
-            url = data['next']
-        else:
-            break
+    if data['next']:
+        url = data['next']
 
     return tracks
 
