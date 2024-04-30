@@ -32,6 +32,27 @@ def get_related_artist(id):
     top_5 = [artist["name"] for artist in related_artists[:5]]
     return top_5
 
+def search_track(track_name, artist_name, album_name=None, year=None, genre=None, market=None):
+    token = spotify_token.get_token()
+    url = "https://api.spotify.com/v1/search"
+    headers = get_header(token)
+    query = f"track:{track_name} artist:{artist_name}"
+    params = {"q": query, "type": "track", "limit": 1 }
+    response = get(url, headers=headers, params=params)
+    data = response.json()
+    tracks = data.get('tracks', {}).get('items', [])
+    if tracks:
+        track_info = {
+            "name": tracks[0]["name"],
+            "artist": tracks[0]["artists"][0]["name"],
+            "album": tracks[0]["album"]["name"],
+            "preview_url": tracks[0]["preview_url"],
+            "spotify_url": tracks[0]["external_urls"]["spotify"]
+        }
+        return track_info
+    else:
+        return "Track not found. Please check the track name and artist name."
+
 def search_playlist_id(playlist_name):
     """Returns the Spotify ID of a playlist."""
     token = spotify_token.get_token()
@@ -45,41 +66,82 @@ def search_playlist_id(playlist_name):
     # pprint.pprint(data)
     return data["id"]
 
-def search_track_by_playlist(playlist_id, limit=100):
-    """Return a list of dictionaries of track info for the first 100 tracks from a playlist."""
+def get_playlist_tracks(playlist_id):
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     headers = get_header(token)
-
+    params = {"limit": 100}
     tracks = []
 
-    response_data = get(url, headers=headers)
-    data = response_data.json()
-    # pprint.pprint(data)
-
+    
+    response = get(url, headers=headers, params=params)
+    data = response.json()
     items = data["items"]
     for item in items:
-        track = item["track"]
+        track = item['track']
         track_info = {
-            "id": track["id"],
-            "name": track["name"],
-            "artist": track["artists"][0]["name"]
+            'id': track['id'],
+            'name': track['name'],
+            'artist': track['artists'][0]['name']
         }
         tracks.append(track_info)
+
+    if data['next']:
+        url = data['next']
+
     return tracks
-  
+
+def search_audio_features(track_id):
+    token = spotify_token.get_token()
+    url = f"https://api.spotify.com/v1/audio-features/{track_id}"
+    headers = get_header(token)
+    response = get(url, headers=headers)
+    data = response.json()
+    track_features = {
+        'valence': data['valence']
+    }
+    return track_features
+
+def get_top_hits_features(top_hits_tracks):
+    top_hits_features = []  
+    for track in top_hits_tracks:
+        basic_info = search_track(track['name'], track['artist'])  
+        name = basic_info['name']
+        artist = basic_info['artist']
+        album = basic_info['album']
+        preview_url = basic_info['preview_url']
+        spotify_url = basic_info['spotify_url']
+            
+        audio_features = search_audio_features(track['id'])   
+        track_info = {
+        'name': name,
+        'artist': artist,
+        'album': album,
+        'preview_url': preview_url,
+        'spotify_url': spotify_url,
+        'audio_features': audio_features  
+        }
+            
+        top_hits_features.append(track_info)
+    return top_hits_features
 
 def main():
     artist = "BLACKPINK"
     artist_id = search_artist_id(artist)
     print(get_related_artist(artist_id))
-
+    print()
     playlist = "Today's Top Hits"
     playlist_id = search_playlist_id(playlist)
-    print(playlist_id)
-    song_data = search_track_by_playlist(playlist_id)
-    # pprint.pprint(song_data)
-
+    print("Spotify ID for Top Hits playlist:", playlist_id)
+    print()
+    top_hits_tracks = get_playlist_tracks(playlist_id)
+    for idx, track in enumerate(top_hits_tracks, start=1):
+        print(f"{idx}. {track['name']} - {track['artist']}")
+    
+    test1 = search_audio_features(top_hits_tracks[0]["id"])
+    # print(test1)
+    test2 = get_top_hits_features(top_hits_tracks)
+    print(test2[0])
 
 if __name__ == "__main__":
     main()
