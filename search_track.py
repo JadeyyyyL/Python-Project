@@ -89,25 +89,22 @@ def get_playlist_tracks(playlist_id):
 # Example usage: Get tracks from Spotify's "Top Hits" playlist
 top_hits_tracks = get_playlist_tracks(top_hits_playlist_id)
 
-for idx, track in enumerate(top_hits_tracks, start=1):
-   print(f"{idx}. {track['name']} - {track['artist']}")
+# for idx, track in enumerate(top_hits_tracks, start=1):
+#    print(f"{idx}. {track['name']} - {track['artist']}")
    
 def search_audio_features(track_id):
     token = spotify_token.get_token()
     url = f"https://api.spotify.com/v1/audio-features/{track_id}"
     headers = get_header(token)
     response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-        track_features = {
-            'valence': data['valence']
-        }
-        return track_features
-    else:
-        return None
+    data = response.json()
+    track_features = {
+        'valence': data['valence']
+    }
+    return track_features
 
 test1 = search_audio_features(top_hits_tracks[0]["id"])
-print(test1)
+# print(test1)
 
 def get_top_hits_features(top_hits_tracks):
     top_hits_features = []  
