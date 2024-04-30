@@ -123,14 +123,14 @@ def get_top_hits_features(top_hits_tracks):
         preview_url = basic_info['preview_url']
         spotify_url = basic_info['spotify_url']
             
-        audio_features = search_audio_features(track['id'])   
+        #audio_features = search_audio_features(track['id'])   
         track_info = {
         'name': name,
         'artist': artist,
         'album': album,
         'preview_url': preview_url,
-        'spotify_url': spotify_url,
-        'audio_features': audio_features  
+        #'spotify_url': spotify_url,
+        #'audio_features': audio_features  
         }
             
         top_hits_features.append(track_info)
