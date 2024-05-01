@@ -79,8 +79,8 @@ def get_playlist_tracks(playlist_id):
 # Get tracks from Spotify's "Top Hits" playlist
 top_hits_tracks = get_playlist_tracks(top_hits_playlist_id)
 
-# for idx, track in enumerate(top_hits_tracks, start=1):
-#    print(f"{idx}. {track['name']} - {track['artist']}")
+for idx, track in enumerate(top_hits_tracks, start=1):
+   print(f"{idx}. {track['name']} - {track['artist']}")
    
 def search_audio_features(track_id):
     token = spotify_token.get_token()
