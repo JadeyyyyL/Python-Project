@@ -2,6 +2,7 @@ import spotify_token
 import pprint 
 from requests import get
 import json
+import nlp_mood
 
 def get_header(token):
     """Returns a dictionary that contains the authorization header with the access token."""

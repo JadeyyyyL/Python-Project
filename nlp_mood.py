@@ -23,9 +23,8 @@ def spellcheck(text):
     print(corrected_text)
     return corrected_text
 
-def sentiment_analysis():
+def sentiment_analysis(text):
     """Returns the sentiment score of the user input."""
-    text = input("Tell us how you feel right now: ")
 
     corrected_text = spellcheck(text)
     stop_words = set(stopwords.words("english"))

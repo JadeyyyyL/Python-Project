@@ -1,4 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from nlp_mood import categorize_mood
+from spotify import categorize_songs_by_emotion, get_top_hits_features
+import random
 
 app = Flask(__name__, template_folder = "template")
 
@@ -25,6 +28,27 @@ def submit():
 # Next page
 @app.route('/results/<user_input>')
 def generate_song(user_input):
+    try:
+        categorized_emotions = categorize_mood(user_input)
+        primary_emotion = categorized_emotions[0] if categorized_emotions else None
+        if primary_emotion:
+            # Load top hits tracks
+            top_hits_tracks = get_top_hits_features()
+
+            # Categorize songs based on emotions and select a random song from the primary emotion category
+            categorized_songs = categorize_songs_by_emotion(top_hits_tracks)
+            selected_songs = categorized_songs.get(primary_emotion, [])
+            if selected_songs:
+                random_song = random.choice(selected_songs)
+                return render_template("results.html", random_song=random_song)
+            else:
+                return render_template("error_page.html", error_message=f'No songs found for the {primary_emotion} emotion.'), 404
+        else:
+            return render_template("error_page.html", error_message='Unable to determine user emotion.'), 400
+
+    except Exception as e:
+        return render_template("error_page.html", error_message=str(e)), 500
+
     #recommendation = recommended_song()
     #spotify_preview = "https://open.spotify.com/embed/track/6rqhFgbbKwnb9MLmUQDhG6"
     #related_artists = [
@@ -34,7 +58,7 @@ def generate_song(user_input):
     #     {"name": "Artist 4", "image": "artist4.jpg", "link": "https://example.com/artist4"},
     #     {"name": "Artist 5", "image": "artist5.jpg", "link": "https://example.com/artist5"}
     # ]
-    return render_template("results.html", user_input=user_input) #recommendation = recommendation, spotify_preview = spotify_preview, related_artists = related_artists
+    #return render_template("results.html", user_input=user_input) #recommendation = recommendation, spotify_preview = spotify_preview, related_artists = related_artists
 
 
 #Error page
