@@ -125,23 +125,51 @@ def get_top_hits_features(top_hits_tracks):
         top_hits_features.append(track_info)
     return top_hits_features
 
+def categorize_songs_by_emotion(songs):
+    categories = {
+        "happy": (0.6, 1.0),
+        "sad": (-1.0, -0.6),
+        "bored": (-0.6, -0.4),
+        "excited": (0.4, 0.6),
+        "depressed": (-0.4, -0.2),
+        "anxious": (-0.2, 0.0),
+        "angry": (0.0, 0.2),
+        "calm": (0.2, 0.4),
+        "neutral": (-0.1, 0.1)
+    }
+    categorized_songs = {category: [] for category in categories}
+    for song in songs:
+        valence = song.get('audio_features', {}).get('valence', 0.5)  # Default valence is 0.5 if not provided
+        for category, (min_valence, max_valence) in categories.items():
+            if min_valence <= valence <= max_valence:
+                categorized_songs[category].append(song)
+    
+    return categorized_songs
+
 def main():
     artist = "BLACKPINK"
     artist_id = search_artist_id(artist)
-    print(get_related_artist(artist_id))
-    print()
+    #print(get_related_artist(artist_id))
+    #print()
     playlist = "Today's Top Hits"
     playlist_id = search_playlist_id(playlist)
-    print("Spotify ID for Top Hits playlist:", playlist_id)
-    print()
+    #print("Spotify ID for Top Hits playlist:", playlist_id)
+    #print()
     top_hits_tracks = get_playlist_tracks(playlist_id)
-    for idx, track in enumerate(top_hits_tracks, start=1):
-        print(f"{idx}. {track['name']} - {track['artist']}")
+    #for idx, track in enumerate(top_hits_tracks, start=1):
+        #print(f"{idx}. {track['name']} - {track['artist']}")
     
     test1 = search_audio_features(top_hits_tracks[0]["id"])
     # print(test1)
     test2 = get_top_hits_features(top_hits_tracks)
-    print(test2[0])
+    #print(test2[0])
+    categorized_songs = categorize_songs_by_emotion(top_hits_tracks)
+
+    for category, songs_in_category in categorized_songs.items():
+        print(f"{category.capitalize()} Songs:")
+        for song in songs_in_category:
+            print(f"- {song['name']} by {song['artist']}")
+        print()
 
 if __name__ == "__main__":
     main()

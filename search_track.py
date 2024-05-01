@@ -31,6 +31,27 @@ for row in song_data:
     valence = search_audio_features(row["id"])
     audio_features.append(valence)
 
+def search_track(track_name, artist_name, album_name=None, year=None, genre=None, market=None):
+    token = spotify_token.get_token()
+    url = "https://api.spotify.com/v1/search"
+    headers = get_header(token)
+    query = f"track:{track_name} artist:{artist_name}"
+    params = {"q": query, "type": "track", "limit": 1 }
+    response = get(url, headers=headers, params=params)
+    data = response.json()
+    tracks = data.get('tracks', {}).get('items', [])
+    if tracks:
+        track_info = {
+            "name": tracks[0]["name"],
+            "artist": tracks[0]["artists"][0]["name"],
+            "album": tracks[0]["album"]["name"],
+            "preview_url": tracks[0]["preview_url"],
+            "spotify_url": tracks[0]["external_urls"]["spotify"]
+        }
+        return track_info
+    else:
+        return "Track not found. Please check the track name and artist name."
+
 def get_top_hits_features(top_hits_tracks):
     top_hits_features = []  
     for track in top_hits_tracks:
@@ -39,7 +60,7 @@ def get_top_hits_features(top_hits_tracks):
         artist = basic_info['artist']
         album = basic_info['album']
         preview_url = basic_info['preview_url']
-        spotify_url = basic_info['spotify_url']
+        #spotify_url = basic_info['spotify_url']
             
         #audio_features = search_audio_features(track['id'])   
         track_info = {
@@ -57,30 +78,6 @@ def get_top_hits_features(top_hits_tracks):
 test2 = get_top_hits_features(top_hits_tracks)
 print(test2[0])
 
-
-
-
-
-# def search_track(track_name, artist_name, album_name=None, year=None, genre=None, market=None):
-#     token = spotify_token.get_token()
-#     url = "https://api.spotify.com/v1/search"
-#     headers = get_header(token)
-#     query = f"track:{track_name} artist:{artist_name}"
-#     params = {"q": query, "type": "track", "limit": 1 }
-#     response = get(url, headers=headers, params=params)
-#     data = response.json()
-#     tracks = data.get('tracks', {}).get('items', [])
-#     if tracks:
-#         track_info = {
-#             "name": tracks[0]["name"],
-#             "artist": tracks[0]["artists"][0]["name"],
-#             "album": tracks[0]["album"]["name"],
-#             "preview_url": tracks[0]["preview_url"],
-#             "spotify_url": tracks[0]["external_urls"]["spotify"]
-#         }
-#         return track_info
-#     else:
-#         return "Track not found. Please check the track name and artist name."
     
 # # search_track("Greedy", "Tate McRae", album_name="THINK LATER")
 # #print(search_track("Standing Next to You", "Jung Kook"))
