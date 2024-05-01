@@ -39,6 +39,7 @@ def search_track(track_name, artist_name, album_name=None, year=None, genre=None
     query = f"track:{track_name} artist:{artist_name}"
     params = {"q": query, "type": "track", "limit": 1 }
     response = get(url, headers=headers, params=params)
+    response.raise_for_status()
     data = response.json()
     tracks = data.get('tracks', {}).get('items', [])
     if tracks:
