@@ -128,14 +128,14 @@ def get_top_hits_features(top_hits_tracks):
 
 def categorize_songs_by_emotion(songs):
     categories = {
-        "happy": (0.1, 1),
-        "sad": (-1, -0.1),
-        "bored": (-0.5, 0),
-        "excited": (0.5, 1),
-        "depressed": (-0.8, -0.1),
-        "anxious": (-0.7, -0.1),
-        "angry": (-0.6, -0.1),
-        "calm": (0, 0.3)
+        "happy": (0.5, 1),
+        "sad": (0, 0.5),
+        "bored": (0.25, 0.75),
+        "excited": (0.75, 1),
+        "depressed": (0, 0.3),
+        "anxious": (0.3, 0.5),
+        "angry": (0.6, 0.8),
+        "calm": (0.3, 0.6)
     }
     categorized_songs = {category: [] for category in categories}
     for song in songs:
