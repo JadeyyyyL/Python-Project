@@ -28,6 +28,7 @@ We know we wanted to work on something related to music, so we started off with 
 ## Listening to Song:
 - On the results page, you'll find the details of the selected song, including the song name, artist album, and Spotify URL.
 - Click on the Spotify URL to listen to the song on Spotify.
+
 ![alt text](image-2.png)
 
 # Error Handling:
