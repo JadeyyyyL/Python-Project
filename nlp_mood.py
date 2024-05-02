@@ -49,7 +49,7 @@ def categorize_mood(sentiment_score):
     }
     for mood, score_range in mood_categories.items():
         lower_bound, upper_bound = score_range
-        if lower_bound <= sentiment_score <= upper_bound:
+        if float(lower_bound) <= sentiment_score <= float(upper_bound):
             return mood
     
     return "Sorry, I'm not sure I understand what you are saying."
