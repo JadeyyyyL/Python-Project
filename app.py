@@ -18,7 +18,7 @@ def submit():
             # Get user input from the form
             user_input = request.form['user_input']
             # Redirect to the next page with the user input as a URL parameter
-            return redirect('/results', user_input=user_input)
+            return redirect('/results')
 
     except Exception as e:
         return render_template("error_page.html", error_message=str(e))
