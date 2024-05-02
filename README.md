@@ -17,6 +17,7 @@ Accessing the Website:
 # Results Page:
 - After submitting your mood, you'll be redirected to a results page (results.html).
 - This page displays a randomly selected song based on your input mood.
+![alt text](image-1.png)
 
 
 # Listening to Song:
