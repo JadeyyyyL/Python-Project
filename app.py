@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect
 from nlp_mood import categorize_mood
 from spotify import categorize_songs_by_emotion, get_top_hits_features
 import random
@@ -18,7 +18,7 @@ def submit():
             # Get user input from the form
             user_input = request.form['user_input']
             # Redirect to the next page with the user input as a URL parameter
-            return render_template("results.html", user_input = user_input)
+            return redirect('/results', user_input=user_input)
 
     except Exception as e:
         return render_template("error_page.html", error_message=str(e))
@@ -26,9 +26,10 @@ def submit():
     return render_template("index.html")
 
 # Next page
-@app.route('/results/<user_input>')
+@app.route('/results')
 def generate_song(user_input):
     try:
+        user_input = session.get('user_input')
         categorized_emotions = categorize_mood(user_input)
         primary_emotion = categorized_emotions[0] if categorized_emotions else None
         if primary_emotion:
