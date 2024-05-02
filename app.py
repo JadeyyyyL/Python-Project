@@ -47,7 +47,7 @@ def generate_song():
                     random_song = random.choice(selected_songs)
                     return render_template("results.html", random_song=random_song)
                 else:
-                    return render_template("error_page.html", error_message=f'No songs found for the {primary_emotion} emotion.'), 404
+                    return render_template("error_page.html", error_message=f'No songs found for the {categorized_emotions} emotion.'), 404
             else:
                 return render_template("error_page.html", error_message='Unable to determine user emotion.'), 400
         else:
