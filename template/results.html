@@ -41,9 +41,9 @@
     <h1>According to your inputs, we have one recommended song for you from Spotify's top hits:</h1>
     <p>Name: {{ random_song.name }}</p>
     <p>Artist: {{ random_song.artist }}</p>
-    <p>Album: {{ random_song.album }}</p>
-    <p>Preview URL: {{ random_song.preview_url }}</p>
-    <p>Spotify URL: <a href="{{ random_song.spotify_url }}">Listen on Spotify</a></p>
+    <p>Album: {{ random_song_features.album }}</p>
+    <p>Preview URL: {{ random_song_features.preview_url }}</p>
+    <p>Spotify URL: <a href="{{ random_song_features.spotify_url }}">Listen on Spotify</a></p>
     <p>Valence: {{ random_song.audio_features.valence }}</p>
     <a href="/" class="goback-btn">Go Back</a>
     
