@@ -30,21 +30,22 @@ def submit():
 def generate_song():
     try:
         user_input = session.get('user_input')
-        categorized_emotions = categorize_mood(user_input)
-        primary_emotion = categorized_emotions[0] if categorized_emotions else None
-        if primary_emotion:
-            # Load top hits tracks
-            top_hits_tracks = get_top_hits_features()
-            # Categorize songs based on emotions and select a random song from the primary emotion category
-            categorized_songs = categorize_songs_by_emotion(top_hits_tracks)
-            selected_songs = categorized_songs.get(primary_emotion, [])
-            if selected_songs:
-                random_song = random.choice(selected_songs)
-                return render_template("results.html", random_song=random_song)
+        if user_input:
+            categorized_emotions = categorize_mood(user_input)
+            primary_emotion = categorized_emotions[0] if categorized_emotions else None
+            if primary_emotion:
+                top_hits_tracks = get_top_hits_features()
+                categorized_songs = categorize_songs_by_emotion(top_hits_tracks)
+                selected_songs = categorized_songs.get(primary_emotion, [])
+                if selected_songs:
+                    random_song = random.choice(selected_songs)
+                    return render_template("results.html", random_song=random_song)
+                else:
+                    return render_template("error_page.html", error_message=f'No songs found for the {primary_emotion} emotion.'), 404
             else:
-                return render_template("error_page.html", error_message=f'No songs found for the {primary_emotion} emotion.'), 404
+                return render_template("error_page.html", error_message='Unable to determine user emotion.'), 400
         else:
-            return render_template("error_page.html", error_message='Unable to determine user emotion.'), 400
+            return render_template("error_page.html", error_message='No user input provided.')
 
     except Exception as e:
         return render_template("error_page.html", error_message=str(e)), 500
