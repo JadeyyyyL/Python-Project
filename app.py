@@ -47,7 +47,7 @@ def generate_song():
                 selected_songs = categorized_songs.get(categorized_emotions, [])
                 if selected_songs:
                     random_song = random.choice(selected_songs)
-                    random_song_features = next((song['audio_features'] for song in top_hits_features if song['name'] == random_song['name'] and song['artist'] == random_song['artist']), None)
+                    random_song_features = next((song for song in top_hits_features if song['name'] == random_song['name'] and song['artist'] == random_song['artist']), None)
                     return render_template("results.html", random_song=random_song, random_song_features = random_song_features)
                 else:
                     return render_template("error_page.html", error_message=f'No songs found for the {categorized_emotions} emotion.'), 404
