@@ -39,13 +39,15 @@ def generate_song():
                 playlist = "Today's Top Hits"
                 playlist_id = spotify.search_playlist_id(playlist)
                 top_hits_tracks = spotify.get_playlist_tracks(playlist_id)
+                top_hits_features = spotify.get_top_hits_features(top_hits_tracks)
                 for track in top_hits_tracks:
                     track['audio_features'] = spotify.search_audio_features(track['id'])
                 categorized_songs = spotify.categorize_songs_by_emotion(top_hits_tracks)
                 selected_songs = categorized_songs.get(categorized_emotions, [])
                 if selected_songs:
                     random_song = random.choice(selected_songs)
-                    return render_template("results.html", random_song=random_song)
+                    random_song_features = next((song['audio_features'] for song in top_hits_features if song['name'] == random_song['name'] and song['artist'] == random_song['artist']), None)
+                    return render_template("results.html", random_song=random_song, random_song_features = random_song_features)
                 else:
                     return render_template("error_page.html", error_message=f'No songs found for the {categorized_emotions} emotion.'), 404
             else:
