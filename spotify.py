@@ -164,6 +164,9 @@ def main():
     # print(test1)
     test2 = get_top_hits_features(top_hits_tracks)
     #print(test2[0])
+    for track in top_hits_tracks:
+        track['audio_features'] = search_audio_features(track['id'])
+
     categorized_songs = categorize_songs_by_emotion(top_hits_tracks)
 
     for category, songs_in_category in categorized_songs.items():
