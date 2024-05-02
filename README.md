@@ -30,3 +30,4 @@ Accessing the Website:
 
 # Further Improvement:
 - To enhance the website further, we could integrate a page dedicated to recommending related artists. The functionality for this already exists in spotify.py, but it hasn't been implemented on the website yet.
+- Another further improvement is to add a player on the website where the user can directly play the song preview. Currently, we only have the preview link on the page, where the user can copy the link and paste it to another tab to play it.
