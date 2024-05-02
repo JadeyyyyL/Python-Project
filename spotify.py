@@ -1,5 +1,4 @@
 import spotify_token
-import nlp_mood
 import pprint 
 from requests import get
 import json
@@ -99,7 +98,10 @@ def search_audio_features(track_id):
     url = f"https://api.spotify.com/v1/audio-features/{track_id}"
     headers = get_header(token)
     response = get(url, headers=headers)
+    #print("Response status code:", response.status_code)
     data = response.json()
+    print("Response status code:", response.status_code)
+    #print("Response data:", data)
     track_features = {
         'valence': data['valence']
     }
@@ -114,15 +116,15 @@ def get_top_hits_features(top_hits_tracks):
         album = basic_info['album']
         preview_url = basic_info['preview_url']
         spotify_url = basic_info['spotify_url']
-            
-        audio_features = search_audio_features(track['id'])   
+             
+        valence = search_audio_features(track['id'])    
         track_info = {
         'name': name,
         'artist': artist,
         'album': album,
         'preview_url': preview_url,
         'spotify_url': spotify_url,
-        'audio_features': audio_features  
+        'audio_features': valence  
         }
             
         top_hits_features.append(track_info)
@@ -165,9 +167,9 @@ def main():
         #print(f"{idx}. {track['name']} - {track['artist']}")
     
     test1 = search_audio_features(top_hits_tracks[0]["id"])
-    # print(test1)
+    print(test1)
     test2 = get_top_hits_features(top_hits_tracks)
-    print(test2[0])
+    # print(test2[0])
     for track in top_hits_tracks:
         track['audio_features'] = search_audio_features(track['id'])
 
