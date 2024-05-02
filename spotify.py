@@ -167,7 +167,7 @@ def main():
     test1 = search_audio_features(top_hits_tracks[0]["id"])
     # print(test1)
     test2 = get_top_hits_features(top_hits_tracks)
-    #print(test2[0])
+    print(test2[0])
     for track in top_hits_tracks:
         track['audio_features'] = search_audio_features(track['id'])
 
