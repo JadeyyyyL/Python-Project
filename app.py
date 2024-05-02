@@ -15,9 +15,8 @@ def index():
 def submit():
     try:
         if request.method == "POST":
-            # Get user input from the form
             user_input = request.form['user_input']
-            # Redirect to the next page with the user input as a URL parameter
+            session['user_input'] = user_input
             return redirect('/results')
 
     except Exception as e:
@@ -49,17 +48,6 @@ def generate_song():
 
     except Exception as e:
         return render_template("error_page.html", error_message=str(e)), 500
-
-    #recommendation = recommended_song()
-    #spotify_preview = "https://open.spotify.com/embed/track/6rqhFgbbKwnb9MLmUQDhG6"
-    #related_artists = [
-    #     {"name": "Artist 1", "image": "artist1.jpg", "link": "https://example.com/artist1"},
-    #     {"name": "Artist 2", "image": "artist2.jpg", "link": "https://example.com/artist2"},
-    #     {"name": "Artist 3", "image": "artist3.jpg", "link": "https://example.com/artist3"},
-    #     {"name": "Artist 4", "image": "artist4.jpg", "link": "https://example.com/artist4"},
-    #     {"name": "Artist 5", "image": "artist5.jpg", "link": "https://example.com/artist5"}
-    # ]
-    #return render_template("results.html", user_input=user_input) #recommendation = recommendation, spotify_preview = spotify_preview, related_artists = related_artists
 
 
 #Error page
