@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, session, redirect
-from nlp_mood import categorize_mood
-from spotify import categorize_songs_by_emotion, get_top_hits_features
+import nlp_mood
+import spotify
 import random
 
 app = Flask(__name__, template_folder = "template")
@@ -31,12 +31,18 @@ def generate_song():
     try:
         user_input = session.get('user_input')
         if user_input:
-            categorized_emotions = categorize_mood(user_input)
-            primary_emotion = categorized_emotions[0] if categorized_emotions else None
-            if primary_emotion:
-                top_hits_tracks = get_top_hits_features()
-                categorized_songs = categorize_songs_by_emotion(top_hits_tracks)
-                selected_songs = categorized_songs.get(primary_emotion, [])
+            normalized_input = nlp_mood.normalize_repeated_characters(user_input)
+            checked_input = nlp_mood.spellcheck(normalized_input)
+            analyzed_input = nlp_mood.sentiment_analysis(checked_input)
+            categorized_emotions = nlp_mood.categorize_mood(analyzed_input)
+            if categorized_emotions:
+                playlist = "Today's Top Hits"
+                playlist_id = spotify.search_playlist_id(playlist)
+                top_hits_tracks = spotify.get_playlist_tracks(playlist_id)
+                for track in top_hits_tracks:
+                    track['audio_features'] = spotify.search_audio_features(track['id'])
+                categorized_songs = spotify.categorize_songs_by_emotion(top_hits_tracks)
+                selected_songs = categorized_songs.get(categorized_emotions, [])
                 if selected_songs:
                     random_song = random.choice(selected_songs)
                     return render_template("results.html", random_song=random_song)
