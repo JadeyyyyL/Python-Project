@@ -75,8 +75,8 @@ def get_top_hits_features(top_hits_tracks):
         top_hits_features.append(track_info)
     return top_hits_features
 
-test2 = get_top_hits_features(top_hits_tracks)
-print(test2[0])
+# test2 = get_top_hits_features(top_hits_tracks)
+# print(test2[0])
 
     
 # # search_track("Greedy", "Tate McRae", album_name="THINK LATER")
