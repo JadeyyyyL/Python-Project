@@ -35,7 +35,6 @@ def generate_song():
         if primary_emotion:
             # Load top hits tracks
             top_hits_tracks = get_top_hits_features()
-
             # Categorize songs based on emotions and select a random song from the primary emotion category
             categorized_songs = categorize_songs_by_emotion(top_hits_tracks)
             selected_songs = categorized_songs.get(primary_emotion, [])
