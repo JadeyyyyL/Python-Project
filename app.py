@@ -4,6 +4,7 @@ from spotify import categorize_songs_by_emotion, get_top_hits_features
 import random
 
 app = Flask(__name__, template_folder = "template")
+app.secret_key = 'SpoTiFy2772'
 
 # Home page
 @app.route('/')
