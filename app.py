@@ -27,7 +27,7 @@ def submit():
 
 # Next page
 @app.route('/results')
-def generate_song(user_input):
+def generate_song():
     try:
         user_input = session.get('user_input')
         categorized_emotions = categorize_mood(user_input)
