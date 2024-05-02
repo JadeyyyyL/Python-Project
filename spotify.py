@@ -139,7 +139,7 @@ def categorize_songs_by_emotion(songs):
     }
     categorized_songs = {category: [] for category in categories}
     for song in songs:
-        valence = song.get('audio_features', {}).get('valence', 0.5)  # Default valence is 0.5 if not provided
+        valence = float(song.get('audio_features', {}).get('valence', 0.5))  # Default valence is 0.5 if not provided
         for category, (min_valence, max_valence) in categories.items():
             if min_valence is not None and max_valence is not None:
                 if min_valence <= valence <= max_valence:
