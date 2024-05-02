@@ -33,6 +33,7 @@ def generate_song():
         if user_input:
             normalized_input = nlp_mood.normalize_repeated_characters(user_input)
             checked_input = nlp_mood.spellcheck(normalized_input)
+            checked_input = " ".join(checked_input)
             analyzed_input = nlp_mood.sentiment_analysis(checked_input)
             categorized_emotions = nlp_mood.categorize_mood(analyzed_input)
             if categorized_emotions:
