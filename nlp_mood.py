@@ -20,37 +20,46 @@ def spellcheck(text):
     #  print(words)
     misspelled = spell.unknown(words)
     corrected_text = [spell.correction(word) if word in misspelled else word for word in words]
-    print(corrected_text)
+    # print(corrected_text)
     return corrected_text
 
 def sentiment_analysis(text):
-    """Returns the sentiment score of the user input."""
-
+    """Returns the compound sentiment score of the user input."""
     corrected_text = spellcheck(text)
     stop_words = set(stopwords.words("english"))
     filtered_tokenized_text = [word for word in corrected_text if word.isalnum() and word not in stop_words]
     filtered_text = " ".join(filtered_tokenized_text)
     filtered_text = re.sub(r'[\U00010000-\U0010ffff]', lambda match: f":{match.group(0)[1:]}:", filtered_text)
-    print(filtered_text)
+    # print(filtered_text)
 
-    sentiment_score = SentimentIntensityAnalyzer().polarity_scores(filtered_text)
+    sentiment_score = SentimentIntensityAnalyzer().polarity_scores(filtered_text)["compound"]
+    print(sentiment_score)
     return sentiment_score
 
-def categorize_mood():
+def categorize_mood(sentiment_score):
     mood_categories = {
-        "happy": 0.1,
-        "sad": -0.1,
-        "bored": -0.5,
-        "excited": 0.5,
-        "depressed": -0.8,
-        "anxious": -0.7,
-        "angry": -0.6,
-        "calm": 0.3
-    } # The ranges for each categories need to be updated to avoid overlap, while inclusive of all sentiment scores.
-    pass
+        "happy": (0.5, 1.0),
+        "sad": (-1.0, -0.5),
+        "bored": (0, 0.3),
+        "excited": (0.7, 1.0),
+        "depressed": (-1.0, -0.8),
+        "anxious": (-0.7, -0.8),
+        "angry": (-0.8, -0.5),
+        "calm": (0.3, 0.5)
+    }
+    for mood, score_range in mood_categories.items():
+        lower_bound, upper_bound = score_range
+        if lower_bound <= sentiment_score <= upper_bound:
+            return mood
+    
+    return "Sorry, I'm not sure I understand what you are saying."
 
 def main():
-     print(sentiment_analysis())
+    # print(sentiment_analysis())
+    text = input("How are you feeling right now: ")
+    sentiment_score = sentiment_analysis(text)
+
+    print(categorize_mood(sentiment_score))
     
 if __name__ == "__main__":
      main()
