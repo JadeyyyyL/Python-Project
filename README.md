@@ -4,7 +4,7 @@ Jade Liang
 Yuefan Cao
 
 # Instruction:
-1. Accessing the Website:
+Accessing the Website:
 - Open your web browser and navigate to the URL of our website.
 - Upon arrival, you'll land on the homepage.
 
