@@ -10,6 +10,7 @@ Yuefan Cao
 
 # Submitting Your Current Mood:
 - Type your current mood or emotions into the provided input field.
+- In our code, we made our Natural Language Processor to have the ability to understand many types of user inputs. For example, to convey the phrase "So Happy", a user can input "SooOO HapPPpYYyy", and our NLP can still process this input. Additionally, emoji's can also be processed by converting it to the name of emoji icon.
 - Click the submit button to proceed.
 
 # Results Page:
